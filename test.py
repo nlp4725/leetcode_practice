@@ -1,32 +1,19 @@
-paths=[]
-path=''
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # a dictionary to store char and last index seen 
+        # left pointer points to the beginning of substring, update when we see duplicates
+        # right pointer goes through the string
+        left=0
+        seen={}
+        max_length=0
 
-def tree_path(root,path):
-    if not root:
-        return
+        for right,char in enumerate(s):
+            if char in seen and seen[char] >=left: # if current char is duplicate and last time seen index is in the sliding window
+                left=seen[char]+1
+            seen[char]=right
+            max_length=max(max_length,right-left+1)
+        return max_length
     
-    path=path+str(root.val)
 
-    if not root.left and not root.right: # return from root and 
-        paths.append(path)
-        return
-    
-    tree_path(root.left,path)
-    tree_path(root.right,path)
-    
-class TreeNode(object):
-    def __init__(self,val=0, left=None, right=None):
-        self.val=val
-        self.left=left
-        self.right=right
-
-nodeF = TreeNode(val=6, left=None, right=None)
-nodeD = TreeNode(val=4, left=nodeF, right=None)
-nodeE = TreeNode(val=5, left=None, right=None)
-nodeC = TreeNode(val=3, left=None, right=None)
-nodeB = TreeNode(val=2, left=nodeD, right=nodeE)
-nodeA = TreeNode(val=1, left=nodeB, right=nodeC)
-
-
-tree_path(nodeA,path)
-print(paths)
+solution=Solution()
+print(solution.lengthOfLongestSubstring('abba'))
